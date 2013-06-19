@@ -23,9 +23,24 @@ You must use the `--harmony` flags when running node 0.11.x
 
 ## API
 
+### anyrun([host])
+
+Return a new `AnyRun` instance.
+
+- `host`:
+
+
+### AnyRun#run(cmd, cb)
+
+- `cmd`:
+- `cb`:
+
 
 ## Test
 
+```
+    $ make test
+```
 
 ## License
 
