@@ -15,25 +15,35 @@ You must use the `--harmony` flags when running node 0.11.x
 ## Installation
 
 ```
-    $ npm install anyrun
+$ npm install anyrun
 ```
 
 ## Example
 
+```javascript
+var runner = anyrun();
+runner.host('localhost');
+runner.run('uname -u', function (err, stdout, stderr) {
+  console.log('uname done');
+}).run('echo "Hello world"', function (err, stdout, stderr) {
+  console.log('echo done');
+});
+```
 
 ## API
 
-### anyrun([host])
+### anyrun()
 
 Return a new `AnyRun` instance.
 
-- `host`:
+### AnyRun#host(name)
 
+- `name`: hostname
 
 ### AnyRun#run(cmd, cb)
 
-- `cmd`:
-- `cb`:
+- `cmd`: the command string
+- `cb`: the callback `cb(err, stdout, stderr)`
 
 
 ## Test
