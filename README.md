@@ -84,7 +84,7 @@ You must be prepared following before running the test.
 
 - setup [Virtualbox](https://www.virtualbox.org)
 - setup [Vagrant](http://www.vagrantup.com)
-- copy the private key with Vagrant to `test/fixtures/id_rsa.vagrant`
+- copy the private key genereted by Vagrant to `test/fixtures/id_rsa.vagrant`
 
 When you're ready, run the following command:
 
