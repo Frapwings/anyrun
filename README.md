@@ -2,14 +2,11 @@
 
 Transparent command runner library &command runner tool.
 
-This project is an experiment.
-
 
 ## Requirement
 
-- node >= 0.11.x
+- node >= 0.10.x
 
-You must use the `--harmony` flags when running node 0.11.x
 
 
 ## Installation
@@ -17,6 +14,8 @@ You must use the `--harmony` flags when running node 0.11.x
 ```
 $ npm install anyrun
 ```
+
+
 
 ## Example
 
@@ -30,23 +29,51 @@ runner.run('uname -u', function (err, stdout, stderr) {
 });
 ```
 
+
+
 ## API
 
 ### anyrun()
 
-Return a new `AnyRun` instance.
+Initialize a new `AnyRun` instance.
 
-### AnyRun#host(name)
 
-- `name`: hostname
+### AnyRun#AnyRun()
+
+Initialize a new `AnyRun` instance.
+
+
+### AnyRun#ssh(key, value)
+
+Set ssh options.
+
+- `key`: the option key
+- `value`: the option value
+
 
 ### AnyRun#run(cmd, cb)
+
+Run command.
 
 - `cmd`: the command string
 - `cb`: the callback `cb(err, stdout, stderr)`
 
 
+### AnyRun#done()
+
+Done ssh session.
+
+
+
 ## Test
+
+You must be prepared following before running the test.
+
+- setup [Virtualbox](https://www.virtualbox.org)
+- setup [Vagrant](http://www.vagrantup.com)
+- copy the private key with Vagrant to `test/fixtures/id_rsa.vagrant`
+
+When you're ready, run the following command:
 
 ```
     $ make test
