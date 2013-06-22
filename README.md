@@ -20,13 +20,26 @@ $ npm install anyrun
 ## Example
 
 ```javascript
-var runner = anyrun();
-runner.host('localhost');
-runner.run('uname -u', function (err, stdout, stderr) {
-  console.log('uname done');
-}).run('echo "Hello world"', function (err, stdout, stderr) {
-  console.log('echo done');
-});
+// local
+anyrun()
+  .run('uname -u', function (err, stdout, stderr) {
+    console.log('uname done');
+  })
+  .run('echo "Hello world"', function (err, stdout, stderr) {
+    console.log('echo done');
+  });
+
+// remote
+anyrun()
+  .ssh('host', 'example.com')
+  .ssh('port', 2222)
+  .run('uname -u', function (err, stdout, stderr) {
+    console.log('uname done');
+  })
+  .run('echo "Hello world"', function (err, stdout, stderr) {
+    console.log('echo done');
+  })
+  .done(); // close ssh session
 ```
 
 
