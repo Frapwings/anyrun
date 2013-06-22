@@ -13,38 +13,46 @@ var anyrun = require('../');
 
 describe('local', function () {
 
-  describe('host no specify', function () {
-    it('should run with specify command', function (done) {
-      anyrun().run('uname -u', function (err, stdout, stderr) {
-        console.log('err', err);
-        console.log('stdout', stdout);
-        console.log('stderr', stderr);
+  describe('with successful command', function () {
+    it('should run', function (done) {
+      anyrun().run('uname -s', function (err, stdout, stderr) {
+        expect(err).to.eql(null);
+        expect(stdout.length).to.be.greaterThan(0);
+        expect(stderr).to.eql('');
         done();
       });
     });
   });
 
-  describe('localhost', function () {
-    it('should run with specify command', function (done) {
-      anyrun().host('localhost')
-        .run('uname -u', function (err, stdout, stderr) {
-          console.log('err', err);
-          console.log('stdout', stdout);
-          console.log('stderr', stderr);
-          done();
-        });
+  describe('with failed command', function () {
+    it('should run', function (done) {
+      anyrun().run('uname -u', function (err, stdout, stderr) {
+        expect(err).to.be.an(Error);
+        expect(err.code).not.to.eql(0);
+        expect(err.signal).to.eql(null);
+        expect(stdout).to.eql('')
+        expect(stderr.length).to.be.greaterThan(0);
+        done();
+      });
     });
   });
 
-  describe('127.0.0.1', function () {
-    it('should run with specify command', function (done) {
-      anyrun().host('127.0.0.1')
-        .run('uname -u', function (err, stdout, stderr) {
-          console.log('err', err);
-          console.log('stdout', stdout);
-          console.log('stderr', stderr);
+  describe('multiple command', function () {
+    it('should run', function (done) {
+      var runner = anyrun();
+      runner.run('uname -s', function (err, stdout, stderr) {
+        expect(err).to.eql(null);
+        expect(stdout.length).to.be.greaterThan(0);
+        expect(stderr).to.eql('');
+        runner.run('uname -u', function (err, stdout, stderr) {
+          expect(err).to.be.an(Error);
+          expect(err.code).not.to.eql(0);
+          expect(err.signal).to.eql(null);
+          expect(stdout).to.eql('')
+          expect(stderr.length).to.be.greaterThan(0);
           done();
         });
+      });
     });
   });
 });

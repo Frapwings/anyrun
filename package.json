@@ -19,10 +19,12 @@
     "anyrun": "./bin/anyrun"
   },
   "dependencies": {
+    "ssh2": "~0.2.9"
   },
   "devDependencies": {
     "mocha": "*",
-    "expect.js": "*"
+    "expect.js": "*",
+    "debug": "~0.7.2"
   },
   "engines": {
     "node": ">= 0.11.0"
