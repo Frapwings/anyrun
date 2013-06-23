@@ -67,7 +67,7 @@ Set ssh options.
 - `value`: the option value
 
 
-### AnyRun#run(cmd, cb)
+### AnyRun#run(cmd, [opts], cb)
 
 Run command.
 
@@ -76,9 +76,11 @@ Run command.
 - `cb`: the `cb(err, stdout, stderr)` callback
 
 
-### AnyRun#done()
+### AnyRun#done([cb])
 
 Done ssh session.
+
+- `cb`: the `cb(err)` callback
 
 
 
