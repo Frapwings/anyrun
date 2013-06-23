@@ -68,8 +68,9 @@ Set ssh options.
 
 Run command.
 
-- `cmd`: the command string
-- `cb`: the callback `cb(err, stdout, stderr)`
+- `cmd`: the command
+- `opts`: the options
+- `cb`: the `cb(err, stdout, stderr)` callback
 
 
 ### AnyRun#done()
@@ -84,6 +85,8 @@ You must be prepared following before running the test.
 
 - setup [Virtualbox](https://www.virtualbox.org)
 - setup [Vagrant](http://www.vagrantup.com)
+- start Vagrant server
+- setting sshd config (add `__HOGE__` to `AcceptEnv`) on server, and restart
 - copy the private key genereted by Vagrant to `test/fixtures/id_rsa.vagrant`
 
 When you're ready, run the following command:

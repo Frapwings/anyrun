@@ -81,5 +81,44 @@ describe('remote', function () {
     });
   });
 
+  describe('with options', function () {
+    describe('cwd', function () {
+      it('should run', function (done) {
+        var cwd = '/home';
+        var runner = anyrun()
+          .ssh('host', 'localhost')
+          .ssh('port', 2222)
+          .ssh('username', 'vagrant')
+          .ssh('privateKey', TEST_PRIVATE_KEY)
+          .run('pwd', { cwd: cwd }, function (err, stdout, stderr) {
+            runner.done(function () {
+              expect(err).to.eql(null);
+              expect(stdout).to.contain('/home');
+              expect(stderr).to.eql('');
+              done();
+            });
+          });
+      });
+    });
+
+    describe('env', function () {
+      it('should run', function (done) {
+        var env = { __HOGE__: 'hoge' };
+        var runner = anyrun()
+          .ssh('host', 'localhost')
+          .ssh('port', 2222)
+          .ssh('username', 'vagrant')
+          .ssh('privateKey', TEST_PRIVATE_KEY)
+          .run('env | grep hoge', { env: env }, function (err, stdout, stderr) {
+            runner.done(function () {
+              expect(err).to.eql(null);
+              expect(stdout).to.contain('hoge');
+              expect(stderr).to.eql('');
+              done();
+            });
+          });
+      });
+    });
+  });
 });
 
