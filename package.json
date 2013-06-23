@@ -1,10 +1,12 @@
 {
   "name": "anyrun",
   "version": "0.0.1",
-  "description": "Transparent command runner library &command runner tool",
+  "description": "Transparent command execution library & command execution tool",
   "keywords": [
     "command",
-    "remote"
+    "remote",
+    "ssh",
+    "exec"
   ],
   "author": "kazupon (kazuya kawaguchi) <k.kawaguchi@frapwings.jp>",
   "repository": {

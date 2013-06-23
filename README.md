@@ -1,6 +1,6 @@
 # anyrun
 
-Transparent command runner library &command runner tool.
+Transparent command execution library & command execution tool.
 
 
 ## Requirement
@@ -22,8 +22,12 @@ $ npm install anyrun
 ```javascript
 // local
 anyrun()
-  .run('uname -u', function (err, stdout, stderr) {
-    console.log('uname done');
+  .run('uname -s', function (err, stdout, stderr) {
+    if (err) {
+      console.error('uname error: code = %d, signal = %s', err.code, err.signal);
+      return;
+    }
+    console.log('uname done: ', stdout);
   })
   .run('echo "Hello world"', function (err, stdout, stderr) {
     console.log('echo done');
@@ -39,7 +43,6 @@ anyrun()
   .run('echo "Hello world"', function (err, stdout, stderr) {
     console.log('echo done');
   })
-  .done(); // close ssh session
 ```
 
 
@@ -85,7 +88,7 @@ You must be prepared following before running the test.
 
 - setup [Virtualbox](https://www.virtualbox.org)
 - setup [Vagrant](http://www.vagrantup.com)
-- start Vagrant server
+- start Vagrant VM
 - setting sshd config (add `__HOGE__` to `AcceptEnv`) on server, and restart
 - copy the private key genereted by Vagrant to `test/fixtures/id_rsa.vagrant`
 
@@ -100,8 +103,4 @@ When you're ready, run the following command:
 [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
 See the `LICENSE`.
-
-
-## TODO
-
 
