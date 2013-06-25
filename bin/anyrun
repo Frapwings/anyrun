@@ -5,6 +5,7 @@
  */
 var anyrun = require('../');
 var fs = require('fs');
+var path = require('path');
 var format = require('util').format;
 var debug = require('debug')('anyrun');
 var program = require('commander');
@@ -13,13 +14,13 @@ var program = require('commander');
  * function(s)
  */
 var readAnyRunFile = function (program) {
-  var file = program.file || __dirname + '/../anyrun.js';
+  var file = path.resolve(program.file || __dirname + '/../anyrun.js');
   debug('anyrun file path', file);
   var anyrun_file;
   try {
     anyrun_file = require(file);
   } catch (e) {
-    console.error('Not fount anyrun.js');
+    console.error('Not found anyrun.js');
   }
   return anyrun_file;
 };
