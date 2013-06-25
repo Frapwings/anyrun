@@ -21,7 +21,8 @@
     "anyrun": "./bin/anyrun"
   },
   "dependencies": {
-    "ssh2": "~0.2.9"
+    "ssh2": "~0.2.9",
+    "commander": "~1.2.0"
   },
   "devDependencies": {
     "mocha": "*",

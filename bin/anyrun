@@ -1,3 +1,20 @@
 #!/usr/bin/env node
 
+/*!
+ * import(s)
+ */
 var anyrun = require('../');
+var fs = require('fs');
+var debug = require('debug')('anyrun');
+var program = require('commander');
+
+
+// parse argv
+
+program
+  .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
+  .usage('[options] [action ...]')
+  .option('-t, --tasks', 'list all tasks')
+  .option('-f, --file <file>', 'a task file to load')
+  .parse(process.argv);
+
