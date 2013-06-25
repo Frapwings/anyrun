@@ -5,8 +5,24 @@
  */
 var anyrun = require('../');
 var fs = require('fs');
+var format = require('util').format;
 var debug = require('debug')('anyrun');
 var program = require('commander');
+
+/*!
+ * function(s)
+ */
+var readAnyRunFile = function (program) {
+  var file = program.file || __dirname + '/../anyrun.js';
+  debug('anyrun file path', file);
+  var anyrun_file;
+  try {
+    anyrun_file = require(file);
+  } catch (e) {
+    console.error('Not fount anyrun.js');
+  }
+  return anyrun_file;
+};
 
 
 // parse argv
@@ -17,6 +33,18 @@ program
   .option('-t, --tasks', 'list all tasks')
   .option('-f, --file <file>', 'a task file to load')
   .parse(process.argv);
+
+// --task option
+
+if (program.tasks) {
+  var anyrun_file = readAnyRunFile(program);
+  // TODO: check exist deploy !!
+  var tasks = anyrun_file.tasks || [];
+  Object.keys(tasks).forEach(function (name) {
+    console.log(format('  %s:  %s', name, tasks[name].description));
+  });
+  process.exit(0);
+}
 
 if (!program.args.length) {
   program.help();
