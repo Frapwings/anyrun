@@ -5,9 +5,8 @@
  */
 
 var expect = require('expect.js');
-var anyrun = require('../');
-var AnyRun = anyrun.AnyRun;
-var Task = anyrun.Task;
+var AnyRun = require('../');
+var Task = AnyRun.Task;
 
 
 /*!
