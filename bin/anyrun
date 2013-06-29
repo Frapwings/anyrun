@@ -3,12 +3,15 @@
 /*!
  * import(s)
  */
-var anyrun = require('../');
 var fs = require('fs');
 var path = require('path');
 var format = require('util').format;
 var debug = require('debug')('anyrun');
 var program = require('commander');
+var AnyRun = require('../');
+var Task = AnyRun.Task;
+var parseTaskArgs = AnyRun.util.parseTaskArgs;
+
 
 /*!
  * function(s)
@@ -25,6 +28,57 @@ var readAnyRunFile = function (program) {
   return anyrun_file;
 };
 
+var createTasks = function (anyrun, anyrun_file, args) {
+  var define_tasks = anyrun_file.tasks || [];
+  var task_info = args.map(function (arg) {
+    return parseTaskArgs(arg);
+  });
+  debug('task_info:', task_info);
+
+  var tasks = task_info.map(function (info) {
+    var t = define_tasks[info.name];
+    return new Task({
+      name: info.name,
+      description: t ? t.description : '',
+      runner: anyrun,
+      list: info.list,
+      dict: info.dict,
+      action: t ? t.action : null
+    });
+  });
+
+  debug('created tasks:', tasks);
+  return tasks;
+};
+
+var runTasks = function (tasks, cb) {
+  var success = 0;
+  var error = 0;
+  var doNotify = function () {
+    if (tasks.length === (success + error)) {
+      cb();
+    }
+  };
+
+  tasks.forEach(function (task) {
+    if (task._action) {
+      task.once('success', function () {
+        success++;
+        doNotify();
+      });
+      task.once('error', function (err) {
+        error++;
+        doNotify();
+      });
+      task.execute();
+    } else {
+      console.error(format('Not exist `%s` task', task.name));
+      error++;
+      doNotify();
+    }
+  });
+};
+
 
 // parse argv
 
@@ -34,6 +88,7 @@ program
   .option('-t, --tasks', 'list all tasks')
   .option('-f, --file <file>', 'a task file to load')
   .parse(process.argv);
+
 
 // --task option
 
@@ -47,7 +102,16 @@ if (program.tasks) {
   process.exit(0);
 }
 
-if (!program.args.length) {
+if (program.args.length === 0) {
   program.help();
-  process.exit(1);
+  process.exit(0);
+} else {
+  var anyrun_file = readAnyRunFile(program);
+  var anyrun = new AnyRun();
+  var tasks = createTasks(anyrun, anyrun_file, program.args);
+  runTasks(tasks, function (err) {
+    debug('done tasks');
+    var ret = err ? 1 : 0;
+    process.exit(ret);
+  });
 }
