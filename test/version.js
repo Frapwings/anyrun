@@ -7,30 +7,39 @@
 var expect = require('expect.js');
 var exec = require('child_process').exec;
 var fs = require('fs');
+var format = require('util').format;
 
-var pkg = JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8'));
+var PKG = JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8'));
 
 
 /*!
  * test(s)
  */
 
-describe('anyrun --version', function () {
-  it('should output version', function (done) {
-    exec('bin/anyrun --version', function (err, stdout) {
-      if (err) { return done(err); }
-      expect(stdout).to.contain(pkg.version);
-      done();
-    });
-  });
-});
+describe('anyrun', function () {
 
-describe('anyrun -V', function () {
-  it('should output version', function (done) {
-    exec('bin/anyrun -V', function (err, stdout) {
-      if (err) { return done(err); }
-      expect(stdout).to.contain(pkg.version);
-      done();
+  var testVersionOption = function (opt) {
+    describe(opt, function () {
+      describe(format('bin/anyrun %s', opt), function () {
+        before(function (done) {
+          exec(format('bin/anyrun %s', opt), function (err, stdout) {
+            if (err) { return done(err); }
+            this.stdout = stdout;
+            done();
+          }.bind(this));
+        });
+
+        describe('stdout', function () {
+          it(format('expect to contain "%s"', PKG.version), function (done) {
+            expect(this.stdout).to.contain(PKG.version);
+            done();
+          });
+        });
+      });
     });
-  });
-});
+  };
+
+  testVersionOption('--version');
+  testVersionOption('-V');
+
+}); // end of 'anyrun'
